@@ -1,0 +1,228 @@
+<html>
+<head>
+	<title>Plane Game</title>
+	
+<script type="text/javascript">
+		
+	function init(){
+		var element = document.getElementById("im");
+		var obj1 = document.getElementById("enemy1");
+		var obj2 = document.getElementById("enemy2");
+		var obj3 = document.getElementById("randenemy1");
+		var rect1 = element.getBoundingClientRect();
+		var rect2 = obj1.getBoundingClientRect();
+		var rect3 = obj2.getBoundingClientRect();
+		var rect4 = obj3.getBoundingClientRect();
+		obj1.style.visibility='hidden';
+		obj2.style.visibility='hidden';
+		collider();		
+	}
+		
+		
+	function collider(){
+	
+		var overlap = !(rect1.right < rect2.left || 
+						rect1.left > rect2.right || 
+						rect1.bottom < rect2.top || 
+						rect1.top > rect2.bottom)
+		if (overlap == true)
+			alert("Game Over!");
+				
+		var overlap1 = !(rect1.right < rect3.left || 
+			rect1.left > rect3.right || 
+			rect1.bottom < rect3.top || 
+			rect1.top > rect3.bottom)
+		if (overlap1 == true)
+			alert("Game Over!");
+				
+		var overlap2 = !(rect1.right < rect4.left || 
+			rect1.left > rect4.right || 
+			rect1.bottom < rect4.top || 
+			rect1.top > rect4.bottom)
+		if (overlap2 == true)
+			alert("Game Over!");
+		
+		if (overlap==false && overlap1==false && overlap2==false){
+			animate = setTimeout(function(){collider();},20); // call moveRight in 20msec
+		}
+		else{
+		obj1.style.visibility='hidden';
+		obj2.style.visibility='hidden';	
+		obj3.style.visibility='hidden';
+		}
+
+}
+            
+
+
+            function leftArrowPressed() {
+                var element = document.getElementById("im");
+				var n = parseInt(element.style.left);
+				if (n > 0)
+					element.style.left = parseInt(element.style.left) - 10 + 'px';
+            }
+
+            function rightArrowPressed() {
+                var element = document.getElementById("im");
+				var n = parseInt(element.style.left);
+				if (n < 700)
+					element.style.left = parseInt(element.style.left) + 10 + 'px';
+            }
+
+            function upArrowPressed() {
+                var element = document.getElementById("im");
+                var n = parseInt(element.style.top);
+				if (n > 0)
+					element.style.top = parseInt(element.style.top) - 10 + 'px';
+            }
+
+            function downArrowPressed() {
+                var element = document.getElementById("im");
+				var n = parseInt(element.style.top);
+				if (n < 410)
+					element.style.top = parseInt(element.style.top) + 10 + 'px';
+            }
+
+            function moveSelection(event) {                    
+                switch (event.keyCode) {
+                    case 37:
+                        leftArrowPressed();
+                    break;
+
+                    case 39:
+                        rightArrowPressed();
+                    break;
+
+                    case 38:
+                        upArrowPressed();
+                    break;
+
+                    case 40:
+                        downArrowPressed();
+                    break;
+                }
+            };
+
+        function gameLoop()
+        {
+            // change position based on speed
+            moveSelection();
+	   /*moveLeft();*/
+           //alert("Game loop");
+	    //setTimeout("obstacle()",200);
+            setTimeout("gameLoop()",10);
+			
+        }
+			
+		window.onload = function(){init();};
+		
+		
+	</script>
+</head>
+
+<style>
+<!--
+#im{
+	position: relative;
+	z-index: 1;
+	
+			<! -- 700 limit -->
+}
+-->
+@keyframes animatedBackground {
+	from { background-position: 0 0; }
+	to { background-position: 1000% 0; }
+}
+
+#animate-area	{ 
+	width: 800px; 
+	height: 450px; 
+	position: relative;
+	left: 283px;
+	background-image: url("bkgd.jpg");
+	background-repeat: repeat-x;
+
+	animation: animatedBackground 25s linear infinite;
+}
+
+div .arrow {
+	position: relative;
+}
+
+@keyframes enemy_move {
+	from { transform: translate(750px, 0px) }
+	to { transform: translate(0px, 0px) }
+}
+.enemy1 > img {  
+    -webkit-animation: enemy_move 2s linear infinite;
+    animation: enemy_move 2s linear infinite;
+}
+
+.enemy2 > img {  
+    -webkit-animation: enemy_move 2s linear infinite;
+    animation: enemy_move 2s linear infinite;
+}
+ 
+
+
+
+@keyframes  rand_enemy_move {
+	0%   {transform: translate(750px,80px);}
+    25%  {transform: translate(600px,0);}
+	40%  {transform: translate(450px,-80px);}
+    75%  {transform: translate(300px, 0);}
+	85%  {transform: translate(150px,80px);}
+    100% {transform: translate(0,0);}
+}
+
+
+.randenemy1 > img {  
+    -webkit-animation: rand_enemy_move 2s linear infinite;
+    animation: rand_enemy_move 2s linear infinite;
+}
+
+
+</style>
+
+
+<body  align=center" onload="gameLoop();" onkeydown="moveSelection(event)" onkeyup="">
+
+	<h1 align=center><font color="Black" border-color="Red"> Plane Game </font></h1>
+	<br/><br/>
+	
+	<div id="animate-area"> 
+		<div class="enemy1" style="position:absolute; top:100px; z-index:1"> 
+			<img src=crow.png width=60px height=50px>
+		</div>
+		
+		<div class="enemy2" style="position:absolute; top:300px; z-index:1"> 
+			<img src=crow.png width=60px height=50px>
+		</div>
+		
+		<div class="randenemy1" style="position:absolute; top:220px; z-index:1"> 
+			<img src=crow.png width=60px height=50px>
+		</div>
+		
+		<img id="im" src="jet.png" 
+		style="width:100px;height:40px;top:0px;left:0px;position:relative;"
+		/>
+		
+		 
+	</div>
+	
+	<!--
+	
+	<div class="arrow">
+	<img id="up1" onclick="changeImage1()" src="uparrow.png" height=40px width=75px/>
+	<br/>
+	<img id="dw1" onclick="changeImage2()" src="dwarrow.png" height=40px width=75px/>
+	</div>
+	
+	-->
+
+	
+	
+	
+</body>
+
+</html>
